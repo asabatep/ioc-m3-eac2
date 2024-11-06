@@ -8,12 +8,6 @@ from selenium.webdriver.common.by import By
 
 from django.contrib.auth.models import User
 class MySeleniumTests(StaticLiveServerTestCase):
-
-    admin_user = 'isard'
-    admin_pass = 'pirineus'
-    staff_user = 'user'
-    staff_pass = 'ContraSenya123?'
-
     # no crearem una BD de test en aquesta ocasió (comentem la línia)
     #fixtures = ['testdb.json',]
     @classmethod
@@ -32,41 +26,23 @@ class MySeleniumTests(StaticLiveServerTestCase):
     def tearDownClass(cls):
         # tanquem browser
         # comentar la propera línia si volem veure el resultat de l'execució al navegador
-        #cls.selenium.quit()
+        cls.selenium.quit()
         super().tearDownClass()
- 
-#    def test_login(self):
-#        # anem directament a la pàgina d'accés a l'admin panel
-#        self.selenium.get('%s%s' % (self.live_server_url, '/admin/login/'))
-# 
-#        # comprovem que el títol de la pàgina és el què esperem
-#        self.assertEqual( self.selenium.title , "Log in | Django site admin" )
-# 
-#        # introduïm dades de login i cliquem el botó "Log in" per entrar
-#        username_input = self.selenium.find_element(By.NAME,"username")
-#        username_input.send_keys('isard')
-#        password_input = self.selenium.find_element(By.NAME,"password")
-#        password_input.send_keys('pirineus')
-#        self.selenium.find_element(By.XPATH,'//input[@value="Log in"]').click()
-# 
-#        # comprovem si hem aconseguit entrar a l'admin panel pel títol de la pàgina
-#        self.assertEqual( self.selenium.title , "Site administration | Django site admin" )
-#
 
     def test_create_user(self):
         # anem directament a la pàgina d'accés a l'admin panel
         self.selenium.get('%s%s' % (self.live_server_url, '/admin/login/'))
- 
+
         # comprovem que el títol de la pàgina és el què esperem
         self.assertEqual( self.selenium.title , "Log in | Django site admin" )
- 
+
         # introduïm dades de login i cliquem el botó "Log in" per entrar
         username_input = self.selenium.find_element(By.NAME,"username")
         username_input.send_keys('isard')
         password_input = self.selenium.find_element(By.NAME,"password")
         password_input.send_keys('pirineus')
         self.selenium.find_element(By.XPATH,'//input[@value="Log in"]').click()
- 
+
         # comprovem si hem aconseguit entrar a l'admin panel pel títol de la pàgina
         self.assertEqual( self.selenium.title , "Site administration | Django site admin" )
 
@@ -85,21 +61,15 @@ class MySeleniumTests(StaticLiveServerTestCase):
         self.selenium.find_element(By.NAME,'_save').click()
 
         self.selenium.find_element(By.XPATH, "//button[@type='submit' and text()='Log out']").click()
-    #def test_staff_user(self):
-        # anem directament a la pàgina d'accés a l'admin panel
         self.selenium.get('%s%s' % (self.live_server_url, '/admin/login/'))
- 
-        # comprovem que el títol de la pàgina és el què esperem
         self.assertEqual( self.selenium.title , "Log in | Django site admin" )
- 
-        # introduïm dades de login i cliquem el botó "Log in" per entrar
+
         username_input = self.selenium.find_element(By.NAME,"username")
         username_input.send_keys('user')
         password_input = self.selenium.find_element(By.NAME,"password")
         password_input.send_keys('ContraSenya123?')
         self.selenium.find_element(By.XPATH,'//input[@value="Log in"]').click()
- 
-        # comprovem si hem aconseguit entrar a l'admin panel pel títol de la pàgina
+
         self.assertEqual( self.selenium.title , "Site administration | Django site admin" )
         
         self.selenium.get('%s%s' % (self.live_server_url, '/admin/auth/user/add/'))
